@@ -4,7 +4,7 @@
 Customer Service is a core service for a lot of businesses around the world, and it is getting disrupted at the moment by Natural Language Processing-powered applications. The [Smart Search_Photo_Album](https://b3-photo.s3.amazonaws.com/index.html) is a serverless, micro service-driven web application that offers users an intelligent album. It not only allows users to upload their photos but search by natural language. Besides, this album supports customized labels assigned by users.
 
 ## Demo ##
-![image](https://github.com/tim-kao/CloudComputing_Clever_Photo_Album/blob/main/demo/cat_and_dog.png)
+![image](https://github.com/jyincheng/Smart-Search-Photo-Album/blob/main/smart-search-photo-album/demo-frontend.png)
 
 ## Application (Language & Tools) ##
 1) Frontend: CSS, HTML, JavaScript
