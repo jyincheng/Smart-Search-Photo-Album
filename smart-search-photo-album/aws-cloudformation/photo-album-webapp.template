@@ -1,0 +1,460 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "859dac0c-de2b-467b-a2e3-9a6f05a97b4b": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 600,
+                    "y": 210
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "4f47687e-ecec-47ff-8d24-72672c96bca0": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 290,
+                    "y": 30
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "6213572b-e2a7-4d8c-88af-5970d42c6e19": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 290,
+                    "y": 150
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "f1ed7bde-9bfd-4cac-98e6-313a987e316a": {
+                "size": {
+                    "width": 150,
+                    "height": 150
+                },
+                "position": {
+                    "x": 590,
+                    "y": -10
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "ea118634-306b-4458-a38f-3584afded7ce",
+                    "4f47687e-ecec-47ff-8d24-72672c96bca0"
+                ]
+            },
+            "d9e0f0da-f2fa-4edf-b973-ace620374600": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 150,
+                    "y": 30
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "4f47687e-ecec-47ff-8d24-72672c96bca0"
+                ]
+            },
+            "88a6d766-4281-4f4c-82b4-7971dc0d9a34": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 150,
+                    "y": 150
+                },
+                "z": 1,
+                "embeds": [],
+                "dependson": [
+                    "6213572b-e2a7-4d8c-88af-5970d42c6e19"
+                ]
+            },
+            "bf08e187-ae8b-4925-8302-96ad1abecf20": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 480,
+                    "y": 150
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "ea118634-306b-4458-a38f-3584afded7ce": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 810,
+                    "y": 190
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "bf11f27d-2497-4f07-bd0a-f44cca9a6bab": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 40,
+                    "y": 110
+                },
+                "z": 0,
+                "embeds": []
+            }
+        }
+    },
+    "Resources": {
+        "IAMR2GYEP": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": "rootrole",
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "apigateway.amazonaws.com",
+                                    "s3.amazonaws.com",
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyName": "root",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": "*",
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "859dac0c-de2b-467b-a2e3-9a6f05a97b4b"
+                }
+            },
+            "DeletionPolicy": "Retain"
+        },
+        "S3B4F0R5": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "PublicRead",
+                "BucketName": "b3-photo",
+                "WebsiteConfiguration": {
+                    "IndexDocument": "index.html"
+                },
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedHeaders": [
+                                "*"
+                            ],
+                            "AllowedMethods": [
+                                "HEAD",
+                                "GET",
+                                "PUT",
+                                "POST",
+                                "DELETE"
+                            ],
+                            "AllowedOrigins": [
+                                "*"
+                            ],
+                            "ExposedHeaders": [
+                                "ETag",
+                                "x-amz-meta-custom-header",
+                                "x-amz-meta-customlabels"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4f47687e-ecec-47ff-8d24-72672c96bca0"
+                }
+            },
+            "DeletionPolicy": "Retain"
+        },
+        "S3B4DHPK": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "PublicRead",
+                "BucketName": "b2-photo",
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedHeaders": [
+                                "*"
+                            ],
+                            "AllowedMethods": [
+                                "HEAD",
+                                "GET",
+                                "PUT",
+                                "POST",
+                                "DELETE"
+                            ],
+                            "AllowedOrigins": [
+                                "*"
+                            ],
+                            "ExposedHeaders": [
+                                "ETag",
+                                "x-amz-meta-custom-header",
+                                "x-amz-meta-customlabels"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "6213572b-e2a7-4d8c-88af-5970d42c6e19"
+                }
+            },
+            "DeletionPolicy": "Retain"
+        },
+        "S3BP251LX": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "S3B4F0R5"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Sid": "AllowPublicRead",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "*"
+                            },
+                            "Action": "s3:GetObject",
+                            "Resource": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:s3:::",
+                                        {
+                                            "Ref": "S3B4F0R5"
+                                        },
+                                        "/*"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "d9e0f0da-f2fa-4edf-b973-ace620374600"
+                }
+            },
+            "DeletionPolicy": "Retain",
+            "DependsOn": [
+                "S3B4F0R5"
+            ]
+        },
+        "S3BP510ZE": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "S3B4DHPK"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Sid": "AllowPublicRead",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "*"
+                            },
+                            "Action": "s3:GetObject",
+                            "Resource": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:s3:::",
+                                        {
+                                            "Ref": "S3B4DHPK"
+                                        },
+                                        "/*"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "88a6d766-4281-4f4c-82b4-7971dc0d9a34"
+                }
+            },
+            "DeletionPolicy": "Retain",
+            "DependsOn": [
+                "S3B4DHPK"
+            ]
+        },
+        "LF380FI": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Handler": "lambda_function.handler",
+                "Code": {
+                    "S3Bucket": "pipelines-photo",
+                    "S3Key": "index-photos.zip"
+                },
+                "Role": {
+                    "Fn::GetAtt": [
+                        "IAMR2GYEP",
+                        "Arn"
+                    ]
+                },
+                "Runtime": "python3.8",
+                "FunctionName": "index-photos"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "bf08e187-ae8b-4925-8302-96ad1abecf20"
+                }
+            },
+            "DeletionPolicy": "Retain",
+            "DependsOn": [
+                "IAMR2GYEP"
+            ]
+        },
+        "AGR3OF4": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+                "Name": "AI Photo Search",
+                "BodyS3Location": {
+                    "Bucket": "pipelines-photo",
+                    "Key": "openAPI/AI Photo Search-final-oas30-apigateway.json"
+                },
+                "EndpointConfiguration": {
+                    "Types": [
+                        "REGIONAL"
+                    ]
+                },
+                "Policy": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": [
+                                    "*"
+                                ]
+                            },
+                            "Action": "execute-api:Invoke",
+                            "Resource": [
+                                "execute-api:/*"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f1ed7bde-9bfd-4cac-98e6-313a987e316a"
+                }
+            },
+            "DeletionPolicy": "Retain",
+            "DependsOn": [
+                "LF1V2S8",
+                "S3B4F0R5"
+            ]
+        },
+        "LF1V2S8": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Handler": "lambda_function.handler",
+                "Code": {
+                    "S3Bucket": "pipelines-photo",
+                    "S3Key": "search-photos.zip"
+                },
+                "Role": {
+                    "Fn::GetAtt": [
+                        "IAMR2GYEP",
+                        "Arn"
+                    ]
+                },
+                "Runtime": "python3.8",
+                "FunctionName": "search-photos"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "ea118634-306b-4458-a38f-3584afded7ce"
+                }
+            },
+            "DeletionPolicy": "Retain",
+            "DependsOn": [
+                "IAMR2GYEP"
+            ]
+        },
+        "ED1D1OT": {
+            "Type": "AWS::Elasticsearch::Domain",
+            "Properties": {
+                "DomainName": "photos",
+                "ElasticsearchVersion": "7.9",
+                "ElasticsearchClusterConfig": {
+                    "InstanceCount": "1",
+                    "InstanceType": "t3.small.elasticsearch"
+                },
+                "EBSOptions": {
+                    "EBSEnabled": true,
+                    "VolumeSize": 10
+                },
+                "AccessPolicies": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "AWS": "*"
+                            },
+                            "Action": "es:*",
+                            "Resource": "arn:aws:es:us-east-1:217318971881:domain/photos/*"
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "bf11f27d-2497-4f07-bd0a-f44cca9a6bab"
+                }
+            },
+            "DeletionPolicy": "Retain"
+        }
+    }
+}

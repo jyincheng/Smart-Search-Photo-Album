@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+ install:
+  runtime-versions:
+   python: 3.8
+ build: 
+  commands:
+   - sam build
+   - export BUCKET=pipelines-photo
+   - sam package --s3-bucket $BUCKET --output-template-file outputtemplate.yml
+artifacts:
+ type: zip
+ files:
+  - template.yml
+  - outputtemplate.yml

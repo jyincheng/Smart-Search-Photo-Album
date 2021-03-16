@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400&display=swap");
+
+.container-fluid {
+  background: transparent
+    radial-gradient(
+      circle at 34% -8%,
+      #2c3e50 0%,
+      #233241 26%,
+      #202d3a 34%,
+      #121a22 58%,
+      #090c10 100%
+    );
+  height: 100vh;
+  font-family: "Lato", "Segoe UI", "Tahoma", "Geneva", "Verdana", "sans-serif";
+  color: #fff;
+  overflow-y: hidden;
+}

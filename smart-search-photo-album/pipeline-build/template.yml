@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Python file including external library
+Resources:
+ LF1:
+  Type: AWS::Serverless::Function
+  Properties: 
+   Runtime: python3.8
+   CodeUri: ./function
+   FunctionName: index-photos
+   Handler: index-photos.lambda_handler
+   Policies: 
+    - AWSLambdaExecute
+    - CloudWatchLogsFullAccess
+    - AmazonRekognitionFullAccess
+    
+ LF2:
+  Type: AWS::Serverless::Function
+  Properties:
+   Runtime: python3.8
+   CodeUri: ./function
+   Handler: search-photos.lambda_handler
+   FunctionName: search-photos
+   Policies:
+    - AWSLambdaExecute
+    - CloudWatchLogsFullAccess
+    - AmazonRekognitionFullAccess
+    - AmazonLexFullAccess

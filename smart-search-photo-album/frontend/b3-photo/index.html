@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Photo Album</title>
+  </head>
+  <body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <!-- html body starts here -->
+    <div class="container-fluid pt-3">
+      <!-- banner -->
+      <div class="text-center">
+        <h1>Welcome Pipeline Test</h1>
+      </div>
+      
+      
+      
+      <div class="row my-3"></div>
+        <div class="col-6 mx-auto my-3">
+          <div class="input-group">
+            <input type="file" id="file" onchange="encodeImageFileAsURL(this)" class="form-control-file pt-1">
+
+            <input type="text" class="form-control" id="custombar" placeholder="Customtags, please separate tags with commas">
+
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" id="uploadbtn" type="button">Upload</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 mx-auto">
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchbar" placeholder="Search..." autofocus>
+            
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary" id="searchbtn" type="button">Search</button>
+            </div>
+
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" onclick="searchFromVoice()">Audio</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-8 mx-auto my-3">
+          <div id="images">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+  <!-- Include javascript dependencies, aws apigateway sdk dependencies -->
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  
+  <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="apigClient.js"></script>
+
+  <!-- self written javascripts -->
+  <script type="text/javascript">
+    // connect to api sdk client
+    var apigClient = apigClientFactory.newClient();
+
+    // for base64 encoder
+    var reader = new FileReader();
+    var encoded = null;
+
+    // for transciption
+    window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+    const synth = window.speechSynthesis;
+    const recognition = new SpeechRecognition();
+    const icon = document.querySelector('i.fa.fa-microphone')
+
+    // function binded to file select form, convert image to base64 at selection
+    function encodeImageFileAsURL(element) {
+      var file = element.files[0];
+      reader.onload = function(e) {
+        var src = e.target.result;
+        var newImage = document.createElement("img");
+        newImage.src = src;
+        encoded = newImage.outerHTML;
+      }
+      reader.readAsDataURL(file);
+    }
+
+    // Upload to s3 bucket when upload pressed
+    console.log(apigClient)
+    $(document).ready(function(){
+      $("#uploadbtn").click(function(){
+        var files = $('#file')[0].files[0];
+        var customLabels = $('#custombar').val()
+
+        // set header for requests
+        let params = {
+          'key': files.name,
+          'bucket': "b2-photo",
+          'Content-Type': files.type+';base64',
+          'Accept': files.type,
+          "x-amz-meta-customLabels": customLabels
+        }
+        
+        // parse unused part from base64 encoded string
+        last_index_quote = encoded.lastIndexOf('"');
+        if (files.type == 'image/jpeg') 
+          encodedStr = encoded.substring(33, last_index_quote);
+        else 
+          encodedStr = encoded.substring(32, last_index_quote);
+
+        // send request
+        apigClient.uploadBucketKeyPut(params, encodedStr, {})
+          .then( res => {
+            console.log(res)
+            alert("upload success!")
+          })
+          .catch( e => {
+            console.log(e)
+          })
+      });
+    });
+
+    // Search text in searchbar when search button pressed
+    $('#searchbtn').click(function(){
+      query = $('#searchbar').val();
+      params = {q: query};
+      apigClient.searchGet(params, {}, {})
+        .then(function(result){
+          // clears image first at every search action 
+          document.getElementById("images").innerHTML = ""
+
+          console.log(result)
+        
+        // append images to fragment and then add it to image tag
+        fragment = document.createDocumentFragment()
+        let img_list = result.data
+
+        for (var i = 0; i < img_list.length; i++) {
+          console.log(img_list[i])
+          var new_img = document.createElement('img');
+          new_img.src = img_list[i];
+          new_img.width = 300;
+          new_img.height = 200;
+          new_img.classList.add("mx-2")
+          new_img.classList.add("my-2")
+          fragment.appendChild(new_img);
+        }
+        
+        document.getElementById('images').appendChild(fragment)
+      }).catch(function(result){
+        console.log(result);
+      });
+    });
+
+    // function to handle transcribe and search function combined
+    function searchFromVoice() {
+      recognition.start();
+      recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        console.log(speechToText)
+        
+        var params = {
+          "q": speechToText
+        };
+
+        apigClient.searchGet(params, {}, {})
+          .then(function (result) {
+            console.log('success OK');
+            document.getElementById("images").innerHTML = ""
+
+            console.log(result)
+          
+            fragment = document.createDocumentFragment()
+            let img_list = result.data
+
+            for (var i = 0; i < img_list.length; i++) {
+              console.log(img_list[i])
+              var new_img = document.createElement('img');
+              new_img.src = img_list[i];
+              new_img.width = 300;
+              new_img.height = 200;
+              new_img.classList.add("mx-2")
+              new_img.classList.add("my-2")
+              fragment.appendChild(new_img);
+            }
+            
+            document.getElementById('images').appendChild(fragment)
+          }).catch(function (result) {
+            console.log(result);
+            console.log(speechToText);
+          });
+
+        console.log(speechToText);
+      }
+    }
+  </script>
+</html>
