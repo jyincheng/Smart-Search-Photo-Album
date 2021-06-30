@@ -74,7 +74,3 @@ Quick/Automatic deployment by cloudformation
 
 *AWS Region: US-east-1 (N. Virginia)
 
-
-## Contributor ##
-#### [Tim Kao](https://github.com/tim-kao) (UNI: sk4920)
-#### [Yin Cheng](https://github.com/jyincheng)(UNI: cc4717)
