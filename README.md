@@ -1,7 +1,7 @@
-# Smart Search Album – Intelligent Object Recognition #
+# Smart Album – Intelligent Object Recognition #
 
 ## Overview ##
-The [Smart Search_Photo_Album](https://b3-photo.s3.amazonaws.com/index.html) is a serverless, micro service-driven web application that offers users an intelligent album. It not only allows users to upload their photos but also to search by natural language processing and identify what the photo is about. If you upload your dog's photo, our service will self-identified the photo as dog without user's description of the photo. Additionally, our smart search album supports customized labels assigned by users.
+The [Smart Album](https://b3-photo.s3.amazonaws.com/index.html) is a serverless, micro service-driven web application that offers users an intelligent album. It not only allows users to upload their photos but also to search by natural language processing and identify what the photo is about. If you upload your dog's photo, our service will self-identified the photo as dog without user's description of the photo. Additionally, our smart search album supports customized labels assigned by users.
 
 ## Demo ##
 ![image](https://github.com/jyincheng/Smart-Search-Photo-Album/blob/main/smart-search-photo-album/demo-frontend.png)
